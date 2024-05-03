@@ -13,73 +13,67 @@ Assist-IoT VPN Enabler. Developed using Node.js v14.18.1 and Wireguard v1.0.2020
     ```
 
 3. Add *sudo* before all the *wg* commands to run the API without being containerized, e.g.:
-
-        utils/index.js, line 35:    await exec(`wg ... -> await exec(`sudo wg ... )
-
-4. Execute:
+    ```js
+    utils/index.js, line 35:    await exec(`wg ... -> await exec(`sudo wg ... )
+    ```
+    
+4. Run this command to install the Node.js dependencies.:
     ```bash
     npm install
     ```
 
-5. Execute:
+5. Run this command to execute the API in development mode:
     ```bash
     npm run server
     ```
 
 ## Configuration
 
-The configurable parameters can be found at *config/index.js*.
+The configurable parameters can be found at [config/index.js](config/index.js).
 
-For running the containerized app, it can be configured using the following environment variables:
+The values of these parameters can be set using the following environment variables:
 
 * **WG_PRIVATE_KEY**: private key for the Wireguard server. To generate it, see the [Generate wg server private key](#generate-a-wireguard-server-private-key) section.
 * **API_PORT**: TCP port where it is exposed the API.
 * **SERVER_IP**: public IP of the machine where runs the VPN enabler.
-* **WG_SUBNET**: internal subnet of the Wireguard interface. The value must be the first IP of the subnet in CIDR format (<subnet_first_ip>/<subnet_mask_bits>, e.g., for the subnet 192.168.2.0/24, the value must be 192.168.2.1/24). This parameter is important because determines the maximum number of clients of the VPN. For the example subnet, the maximum number of clients will be 253.
+* **WG_SUBNET**: internal subnet of the Wireguard interface. The value must be the first IP address of the subnet in CIDR format (<subnet_first_ip>/<subnet_mask_bits>, e.g., for the subnet 192.168.2.0/24, the value must be 192.168.2.1/24). This parameter is important because determines the maximum number of clients of the VPN. For the example subnet, the maximum number of clients will be 253.
 * **WG_PORT**: UDP port where it is exposed the Wireguard network interface.
-* **PEER_ALLOWED_IPS**: allowed subnets for the clients. A value of *0.0.0.0/0,::/0* will allow the clients to connect to every network via the VPN, including to the internet. Specifying a subnetwork (e.g. 10.1.243.0/24) the client will only be able to reach this subnetwork.
+* **PEER_ALLOWED_IPS**: allowed subnets for the clients. A value of *0.0.0.0/0,::/0* will allow the clients to connect to every network via the VPN, including to the internet. By specifying a subnetwork (e.g. 10.1.243.0/24) the client will only be able to reach this subnetwork.
 * **MONGODB_HOST**: host of the MongoDB database.
 * **MONGODB_PORT**: port number of the MongoDB database.
 * **MONGODB_USER**: user of the MongoDB database.
 * **MONGODB_PASS**: password for the selected user of the MongoDB database.
+* **LTSE**: boolean value to use the LTSE or a MongoDB instance to store the VPN clients information.
+* **LTSE_URL**: URL of the LTSE enabler.
+* **LTSE_INDEX**: Elasticsearch index to store the VPN clients information.
 
-## Docker images
-The public Docker images registry is located at https://hub.docker.com/r/assistiot/vpn
+## How to deploy
 
-## Run in Docker
+### Run in Docker
+The public Docker images registry is available in [DockerHub](https://hub.docker.com/r/assistiot/vpn).
 
-A *docker-compose* example is included.
+A [Docker compose](docker-compose.yml) example is included.
 
-## Run in Kubernetes
+### Run in Kubernetes via Helm chart
 
-Examples can be found in the *k8s* folder:
+A [Helm chart](https://helm.sh/) is included in the [helm-chart folder](helm-chart):
 ```bash
-kubectl deploy -f k8s/mongo-statefulset.yaml
-
-kubectl deploy -f k8s/deployment.yaml
+helm install vpn-enabler helm-chart
 ```
 
-Network policies are also included:
-```bash
-kubectl deploy -f k8s/wg-api-network-policy.yaml
+This Helm chart will also be available in [Artifact Hub](https://artifacthub.io/packages/helm/assist-iot-vpn/vpn) soon.
 
-kubectl deploy -f k8s/wg-mongo-network-policy.yaml
-```
-### Helm chart
 
-A Helm chart (https://helm.sh/) is included in the *k8s/helm-chart* folder:
-```bash
-helm install vpn-enabler k8s/helm-chart
-```
+## How to use
 
-## Generate a Wireguard server private key
+### Generate a Wireguard server private key
 
-Using the Wireguard cli:
+Using the Wireguard CLI:
 ```bash
 wg genkey
 ```
 
-## Create the Wireguard client configuration file
+### Create the Wireguard client configuration file
 
 1. Generate the client keys: public, private and pre-shared.
     ```bash
@@ -131,7 +125,7 @@ wg genkey
 
 4. Connect to the VPN using a client program.
 
-## Connect to the VPN
+### Connect to the VPN
 
 In Windows, use the TunSafe VPN client (https://tunsafe.com/):
 
@@ -139,7 +133,7 @@ In Windows, use the TunSafe VPN client (https://tunsafe.com/):
 2. Import the configuration file
 3. Connect to the VPN
 
-In Linux, use the Wireguard cli.
+In Linux, use the Wireguard CLI.
 
 1. Install Wireguard
 2. Create the Wireguard configuration file
@@ -152,3 +146,6 @@ In Linux, use the Wireguard cli.
     ```bash
     sudo wg-quick down <path_to_wg_config_file>
     ```
+
+## Documentation
+An extended documentation of the enabler is available in the [official ASSIST-IoT documentation](https://assist-iot-enablers-documentation.readthedocs.io/en/latest/horizontal_planes/smart/vpn_enabler.html), which is in *Read the Docs* format.

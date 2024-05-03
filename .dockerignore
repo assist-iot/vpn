@@ -1,0 +1,25 @@
+# Project
+k8s
+examples
+presharedkey
+.vscode
+
+# Node.js
+node_modules
+
+# git
+.git
+.gitattributes
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+SECURITY.md

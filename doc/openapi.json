@@ -1,0 +1,358 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "version": "1.1.0",
+    "title": "VPN enabler OpenAPI",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "paths": {
+    "/version": {
+      "get": {
+        "tags": [
+          "Common endpoints"
+        ],
+        "summary": "Get version",
+        "description": "Get current enabler `version`",
+        "operationId": "getVersion",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Version"
+                },
+                "example": {
+                  "name": "VPN enabler",
+                  "version": "1.0.0"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Common endpoints"
+        ],
+        "summary": "Get health status",
+        "description": "Returns enabler's health status",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "Healthy"
+          },
+          "500": {
+            "description": "Unhealthy"
+          }
+        }
+      }
+    },
+    "/api-export": {
+      "get": {
+        "tags": [
+          "Common endpoints"
+        ],
+        "summary": "Get OpenAPI documentation",
+        "description": "Returns enabler's OpenAPI documentation",
+        "operationId": "getOpenAPI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "openapi": "3.0.2",
+                  "info": {
+                    "version": "1.0.0",
+                    "title": "VPN enabler OpenAPI",
+                    "license": {
+                      "name": "Apache 2.0",
+                      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+                    }
+                  },
+                  "...": "..."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "VPN network interface"
+        ],
+        "summary": "Get information of the WireGuard network interface",
+        "responses": {
+          "200": {
+            "description": "WireGuard output command in plain text"
+          },
+          "500": {
+            "description": "Error obtaining the information about the WireGuard network interface"
+          }
+        }
+      }
+    },
+    "/info/conf": {
+      "get": {
+        "tags": [
+          "VPN network interface"
+        ],
+        "summary": "Get the configuration file of the WireGuard network interface",
+        "responses": {
+          "200": {
+            "description": "WireGuard configuration file in plain text"
+          },
+          "500": {
+            "description": "Error obtaining the WireGuard configuration file"
+          }
+        }
+      }
+    },
+    "/keys": {
+      "get": {
+        "tags": [
+          "VPN client"
+        ],
+        "summary": "Generate the public, private and pre-shared keys to create a new VPN client",
+        "responses": {
+          "200": {
+            "description": "Public, private and pre-shared keys generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Keys"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error generating the keys"
+          }
+        }
+      }
+    },
+    "/client": {
+      "post": {
+        "tags": [
+          "VPN client"
+        ],
+        "summary": "Create a new client",
+        "requestBody": {
+          "description": "Client public and pre-shared keys",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewClientKeys"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewClient"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Error creating the client"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "VPN client"
+        ],
+        "summary": "Delete a client",
+        "requestBody": {
+          "description": "Client public key",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicKey"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client successfully deleted"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Error deleting the client"
+          }
+        }
+      }
+    },
+    "/client/enable": {
+      "put": {
+        "tags": [
+          "VPN client"
+        ],
+        "summary": "Enable a client",
+        "requestBody": {
+          "description": "Client public key",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicKey"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Client successfully enabled"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Error enabling the client"
+          }
+        }
+      }
+    },
+    "/client/disable": {
+      "put": {
+        "tags": [
+          "VPN client"
+        ],
+        "summary": "Disable a client",
+        "requestBody": {
+          "description": "Client public key",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicKey"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Client successfully disabled"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Error disabling the client"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Version": {
+        "type": "object",
+        "properties": {
+          "enabler": {
+            "description": "Enabler's name",
+            "type": "string",
+            "maxLength": 128
+          },
+          "version": {
+            "description": "Current enabler's version",
+            "type": "string",
+            "maxLength": 128
+          }
+        }
+      },
+      "Keys": {
+        "type": "object",
+        "properties": {
+          "public": {
+            "description": "Client public key",
+            "type": "string"
+          },
+          "private": {
+            "description": "Client private key",
+            "type": "string"
+          },
+          "preshared": {
+            "description": "Preshared key",
+            "type": "string"
+          }
+        }
+      },
+      "NewClientKeys": {
+        "type": "object",
+        "properties": {
+          "publicKey": {
+            "description": "Client public key",
+            "type": "string"
+          },
+          "presharedKey": {
+            "description": "Preshared key",
+            "type": "string"
+          }
+        }
+      },
+      "PublicKey": {
+        "type": "object",
+        "properties": {
+          "publicKey": {
+            "description": "Client public key",
+            "type": "string"
+          }
+        }
+      },
+      "NewClient": {
+        "type": "object",
+        "properties": {
+          "serverPublicKey": {
+            "description": "VPN server public key",
+            "type": "string"
+          },
+          "serverIP": {
+            "description": "VPN server IP address",
+            "type": "string"
+          },
+          "serverPort": {
+            "description": "VPN server port number",
+            "type": "integer"
+          },
+          "clientIP": {
+            "description": "VPN client internal IP address",
+            "type": "string"
+          },
+          "allowedIPs": {
+            "description": "VPN client allowed IP address range",
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+version: "3.7"
+services:
+  wg-api:
+    image: assistiot/vpn
+    container_name: wg-api
+    depends_on:
+      - mongo-wg
+    expose:
+      - 3000
+      - 51820/udp
+    ports:
+      - 3000:3000
+      - 51820:51820/udp
+    healthcheck:
+      test: wget --spider --no-verbose http://localhost:3000/info || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    environment:
+      - API_PORT=3000
+      - SERVER_IP=158.42.161.177
+      - WG_PRIVATE_KEY=qAuVUEbmcI3ofLsjJmQ6+RtEejoNX+WHs7QOsIccn0Y=
+      - WG_SUBNET=192.168.2.1/24
+      - WG_PORT=51820
+      - PEER_ALLOWED_IPS=0.0.0.0/0,::/0
+      - MONGODB_HOST=mongo-wg
+      - MONGODB_PORT=27017
+      - MONGODB_USER=user
+      - MONGODB_PASS=p4ssw0rd
+      - LTSE=true
+      - LTSE_URL=http://ltse-api:8080
+      - LTSE_INDEX=vpn-enabler
+    cap_add:
+      - "NET_ADMIN"
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      wg-api:
+        ipv4_address: 172.18.0.2
+    restart: always
+  mongo-wg:
+    image: mongo
+    container_name: mongo-wg
+    ports:
+      - 27017:27017
+    volumes:
+      - /home/user/mongodata:/data/db
+    expose:
+      - 27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=p4ssw0rd
+    networks:
+      wg-api:
+        ipv4_address: 172.18.0.3
+    restart: always
+networks:
+  wg-api:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/29
