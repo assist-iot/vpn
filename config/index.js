@@ -11,7 +11,7 @@ module.exports = {
     mongoDbPass: process.env.MONGODB_PASS || 'p4ssw0rd',
     mongoDbDatabase: 'wireguard',
     mongoDbPeersCol: 'peers',
-    ltse: process.env.LTSE || true,
+    ltse: process.env.LTSE === 'true' ?? true,
     ltseUrl: process.env.LTSE_URL || 'http://ltse-api:8080',
     ltseIndex: process.env.LTSE_INDEX || 'vpn-enabler'
 }

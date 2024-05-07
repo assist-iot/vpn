@@ -1,13 +1,13 @@
 # VPN Enabler
-Assist-IoT VPN Enabler. Developed using Node.js v14.18.1 and Wireguard v1.0.20200827.
+ASSIST-IoT VPN Enabler. Developed using Node.js v14.18.1 and Wireguard v1.0.20200827.
 
 **IMPORTANT**: in K8s, don't run more than one replica of the VPN Enabler container.
 
 ## Local development
 
-1. Install Wireguard in the machine: https://www.wireguard.com/install/ 
+1. Install Wireguard in the machine. Check the [official documentation](https://www.wireguard.com/install/ ). 
 
-2. Create a Wireguard interface for testing. Configuration example can be found at: *examples/wg0.conf*.
+2. Create a Wireguard interface for testing. A configuration example can be found [in this file](examples/wg0.conf).
     ```bash
     sudo wg-quick up <path_to_wg_config_file>
     ```
@@ -38,7 +38,7 @@ The values of these parameters can be set using the following environment variab
 * **SERVER_IP**: public IP of the machine where runs the VPN enabler.
 * **WG_SUBNET**: internal subnet of the Wireguard interface. The value must be the first IP address of the subnet in CIDR format (<subnet_first_ip>/<subnet_mask_bits>, e.g., for the subnet 192.168.2.0/24, the value must be 192.168.2.1/24). This parameter is important because determines the maximum number of clients of the VPN. For the example subnet, the maximum number of clients will be 253.
 * **WG_PORT**: UDP port where it is exposed the Wireguard network interface.
-* **PEER_ALLOWED_IPS**: allowed subnets for the clients. A value of *0.0.0.0/0,::/0* will allow the clients to connect to every network via the VPN, including to the internet. By specifying a subnetwork (e.g. 10.1.243.0/24) the client will only be able to reach this subnetwork.
+* **PEER_ALLOWED_IPS**: allowed subnets for the clients. A value of *0.0.0.0/0* will allow the clients to connect to every network via the VPN, including to the internet. By specifying a subnetwork (e.g. 10.1.243.0/24) the client will only be able to reach this subnetwork.
 * **MONGODB_HOST**: host of the MongoDB database.
 * **MONGODB_PORT**: port number of the MongoDB database.
 * **MONGODB_USER**: user of the MongoDB database.
@@ -116,18 +116,18 @@ wg genkey
             "serverIP": "192.168.1.67",
             "serverPort": "51820",
             "clientIP": "192.168.2.56/32",
-            "allowedIPs": "0.0.0.0/0,::/0",
+            "allowedIPs": "0.0.0.0/0",
             "message": "Peer added successfully"
         }
     ```
 
-3. Create the Wireguard client configuration file with the data obtained in the responses of the last two requests. A template can be found at *examples/client-template.conf* and,furtheremore, a complete example filled with the responses of the last two requests examples can be found at *examples/client.conf*.
+3. Create the Wireguard client configuration file with the data obtained in the responses of the last two requests. A template can be found [here](examples/client-template.conf) and,furtheremore, a complete example filled with the responses of the last two requests examples can be found at [here](examples/client.conf).
 
 4. Connect to the VPN using a client program.
 
 ### Connect to the VPN
 
-In Windows, use the TunSafe VPN client (https://tunsafe.com/):
+In Windows, use the [TunSafe VPN client](https://tunsafe.com/):
 
 1. Create the Wireguard configuration file
 2. Import the configuration file

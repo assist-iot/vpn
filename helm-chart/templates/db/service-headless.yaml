@@ -1,0 +1,20 @@
+{{- if eq (include "db.deploy" .) "true" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "db.svc.headless" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "db.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - name: mongo
+      port: {{ .Values.db.service.ports.mongo.port }}
+      targetPort: {{ .Values.db.service.ports.mongo.targetPort }}
+      protocol: {{ .Values.db.service.ports.mongo.protocol }}
+  selector:
+    {{- include "db.selectorLabels" . | nindent 4 }}
+{{- end }}
