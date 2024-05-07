@@ -1,0 +1,17 @@
+apiVersion: v1
+entries:
+  vpn:
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2024-05-07T17:59:43.939845272+02:00"
+    description: A Helm chart for the ASSIST-IoT's VPN enabler
+    digest: 66ac2cc13301e45819cda77056d25ac4a9d0a1e7e7051bf44f7506a86af64697
+    maintainers:
+    - email: ravagar2@upv.es
+      name: Rafa Vaño
+    name: vpn
+    type: application
+    urls:
+    - vpn-1.1.0.tgz
+    version: 1.1.0
+generated: "2024-05-07T17:59:43.938967372+02:00"
