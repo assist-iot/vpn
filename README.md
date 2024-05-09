@@ -1,4 +1,11 @@
 # VPN Enabler
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Website](https://img.shields.io/website?url=https://assist-iot.eu)](https://assist-iot.eu)
+[![Read the Docs](https://img.shields.io/readthedocs/assist-iot-enablers-documentation)](https://assist-iot-enablers-documentation.readthedocs.io/en/latest/horizontal_planes/smart/vpn_enabler.html)
+[![Docker Image Version](https://img.shields.io/docker/v/assistiot/vpn)](https://hub.docker.com/r/assistiot/vpn)
+[![Website](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/assist-iot-vpn)](https://artifacthub.io/packages/helm/assist-iot-vpn/vpn)
+
+
 ASSIST-IoT VPN Enabler. Developed using Node.js v14.18.1 and Wireguard v1.0.20200827.
 
 **IMPORTANT**: in K8s, don't run more than one replica of the VPN Enabler container.
@@ -61,7 +68,17 @@ A [Helm chart](https://helm.sh/) is included in the [helm-chart folder](helm-cha
 helm install vpn-enabler helm-chart
 ```
 
-This Helm chart will also be available in [Artifact Hub](https://artifacthub.io/packages/helm/assist-iot-vpn/vpn) soon.
+You also can use the public Helm chart, which is available in [Artifact Hub](https://artifacthub.io/packages/helm/assist-iot-vpn/vpn).
+
+1. Add Helm repository
+```bash
+helm repo add assist-iot-vpn https://assist-iot.github.io/vpn/vpn-artifact
+```
+
+2. Install the chart
+```bash
+helm install my-vpn assist-iot-vpn/vpn
+```
 
 
 ## How to use
