@@ -1,8 +1,8 @@
 This Helm chart has been created using the ASSIST-IoT Helm chart generator!
 
-Thank you for installing {{open}} .Chart.Name {{close}}.
+Thank you for installing {{ .Chart.Name }} enabler.
 
-Your release is named {{open}} .Release.Name {{close}}.
+Your release is named {{ .Release.Name }}.
 
 1. Get the application URL by running these commands:
 {{- if contains "NodePort" .Values.api.service.type }}

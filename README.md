@@ -77,7 +77,7 @@ helm repo add assist-iot-vpn https://assist-iot.github.io/vpn/vpn-artifact
 
 2. Install the chart
 ```bash
-helm install my-vpn assist-iot-vpn/vpn
+helm install vpn-enabler assist-iot-vpn/vpn
 ```
 
 
